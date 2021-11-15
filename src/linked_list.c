@@ -36,21 +36,36 @@ void free_list (node * p)
 /* print list to console */
 void print_list (node * p)
 {
-    // Add your code for exercise 1
-    // There is NO testcode for this
+  if (p == &SENTINEL_node) 
+    return;
+  else 
+    printf("%d",p->value);
+    print_list(p->next);
+    return;
+
 }
 
 int sum_squares (node * p)
 {
-    // Add your code for excercise 2
-    // You can find the tests in tests.cpp
-    return -1;
+  int sum = 0;
+
+  //If the end is reached 0 is returned
+  if (p == &SENTINEL_node)
+    return 0;
+  else //calculate square of current value and add next value through a recursive function
+    sum = square(p->value) + sum_squares(p->next);
+    return sum;
+    
 }
 
 node *map (node * p, int (*f) (int))
 {
-    // Add your code for excercise 3
-    return NULL;
+  //If the end is reached a sentinel-node is returned
+  if (p == &SENTINEL_node)
+    return &SENTINEL_node;
+  else //Make a new node with the value from node p squared, and a new node
+    return make_node(f(p->value),map(p->next,f));
+    
 }
 
 

@@ -44,7 +44,7 @@ TEST_CASE("linked_list")
 	//ns is 1->2->3
   	mns = map (ns, square);
 	//ns is 1->4->9
-	sum=sum_squares(ns);
+	sum=sum_squares(mns);
 	//1+16+81 = 98
 	REQUIRE(sum==98);
 	free_list(ns);
@@ -163,7 +163,7 @@ TEST_CASE("btree")
   REQUIRE (Contains (42, root) == 0);
   REQUIRE (Contains (16, root) == 1);
 
-  REQUIRE (Full (root) == 1);
+  REQUIRE (Full (root) == 0);
 
   root = Remove (7, root);
 
