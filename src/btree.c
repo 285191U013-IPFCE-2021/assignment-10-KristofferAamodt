@@ -15,19 +15,19 @@ struct tree_node * Insert (int x, struct tree_node *t)
     t->item=x;
     t->left=Initialize(t->left);
     t->right=Initialize(t->right);
-    return NULL;
+    return t;
   }
   else //Resend the left of right node, dependent on the size of the item x
   {
-    if(x>t->item) //Either left or right leaf
+    if(x > t->item) //Either left or right leaf
     {
       Insert(x,t->right);
-      return NULL;
+      return t;
     }
     else 
     {
       Insert(x,t->left);
-      return NULL;
+      return t;
     }
 
   }
@@ -37,33 +37,42 @@ struct tree_node * Insert (int x, struct tree_node *t)
 
 struct tree_node * Remove (int x, struct tree_node *t)
 {
+  struct tree_node temp;
   //If the value is not in the tree, the operation is cancelled and nothing happens
   //What happens if one wants to remove a value that are not a leaf?
   if (Contains(x,t)==0){
-    return NULL;
+    return t;
   }
   else if(Empty(t)){ //Check if a leaf is reached
-    return NULL;
+    return t;
   }
   else{
-    if(x>t->item){ //Goes right way
-        return Remove(x,t->right); //Resend the right node
+    if(x > t->item){ //Goes right way
+        Remove(x,t->right); //Resend the right node
+        return t;
     }
-    else if(x=t->item){ //Remove value
+    else if(x == t->item){ //Remove value
       if (t->left->left == NULL){ 
-        free(t->left->left);
-        free(t->left->right);
+        t->item=t->left->item;
+        free(t->left);
+        free(t->right);
         t->left = NULL;
-        return NULL;
+        t->right = NULL;
+        return t;
       } 
       else{
-        return Remove(x,t->left);
+        Remove(x,t->left);
+        return t;
       }
+    }
+    else{ //Goes left way
+      Remove(x,t->left); //Resend the left node
+      return t;
     }
 
   }  
 
-  return NULL;
+  return t;
 }
 
 
@@ -116,7 +125,7 @@ struct tree_node * Initialize (struct tree_node *t)
 int Empty (struct tree_node *t)
 {
   //If the tree node does not have any items, it is empty
-  if(t->left && t->right==NULL)
+  if(t == NULL || t->left==NULL && t->right==NULL)
     return 1;
   else
     return 0; 
